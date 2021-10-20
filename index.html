@@ -8,12 +8,19 @@
     <script src="./redux.min.js"></script>
 </head>
 <body>
-    
+    <div>
+        <h1>Total: <span id="total"></span></h1>
+        <button id="button">incrementar</button>
+    </div>
     <script>
         //Constantes 
         const INCREMENTAR = "incrementar";
         const SOMAR = "somar";
         const initialState = 0;
+
+        function incrementar() {
+            return {type:INCREMENTAR};
+        }
 
         function reducer(state = initialState, action) {
            
@@ -28,15 +35,19 @@
         }
 
         const store = Redux.createStore(reducer);
-        let state =  store.getState();
-        console.log(state);
-        store.dispatch({type: SOMAR, payload:25});
-        state =  store.getState();
-        console.log(state);
 
-        store.dispatch({type: INCREMENTAR});
-        state =  store.getState();
-        console.log(state);
+        function render() {
+            const state =  store.getState();
+            const total = document.getElementById("total");
+            total.innerText = state;
+        };
+
+        render();
+
+        store.subscribe(render);
+
+        const button = document.getElementById("button");
+        button.addEventListener('click', () => store.dispatch(incrementar()));
     </script>
 </body>
 </html>
