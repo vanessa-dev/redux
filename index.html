@@ -22,24 +22,24 @@
             return {type:INCREMENTAR};
         }
 
-        function reducer(state = initialState, action) {
-           
-            if (action.type === INCREMENTAR) {
-                return state + 1;
+        function contador(state = initialState, action) {
+            switch(action.type) {
+                case INCREMENTAR:
+                    return state + 1;
+                case SOMAR:
+                    return state + action.payload;
+                default:
+                    return state;
             }
-            if (action.type === SOMAR) {
-                return state + action.payload;
-            } 
-            
-            return state;
         }
 
+        const reducer = Redux.combineReducers({contador});
         const store = Redux.createStore(reducer);
 
         function render() {
             const state =  store.getState();
             const total = document.getElementById("total");
-            total.innerText = state;
+            total.innerText = state.contador;
         };
 
         render();
