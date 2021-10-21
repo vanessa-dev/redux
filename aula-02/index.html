@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redux- Funçao Pura</title>
     <script src="./redux.min.js"></script>
+    <script src="./immer.umd.production.min.js"></script>
 </head>
 <body>
    
@@ -40,6 +41,16 @@
         * join();
         */
 
+        ///Usando o immer para gerar um novo array
+        const obj1 = {
+            nome: "André",
+            idade: 31
+        };
+
+        const obj2 = immer.produce(obj1, (draft ) => {
+            draft.idade = 35;
+        });
+
         const initialState = {
             nome: "André",
             idade: 31
@@ -55,14 +66,12 @@
             }
         }
 
-        function mudarNome() {
+        const mudarNome = immer.produce((state, action) => {
             switch(action.type) {
                 case 'MUDAR_NOME':
-                    return {... state, nome: action.payload};
-                default:
-                    return state;
+                    state.nome = action.payload;
             }
-        }
+        }, initialState);
 
         const reducer = Redux.combineReducers({modificarWidth, mudarNome });
         const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
