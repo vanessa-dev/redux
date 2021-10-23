@@ -28,13 +28,13 @@
         const INCREMENTAR_TEMPO = "aluno/INCREMENTAR_TEMPO";
         const REDUZIR_TEMPO = "aluno/REDUZIR_TEMPO";
         const MODIFICAR_EMAIL = "aluno/MODIFICAR_EMAI";
-        const COMPLETAR_AULA = "aluno/COMPLETAR_AULA";
-        const COMPLETAR_CURSO = "aluno/COMPLETAR_CURSO";
+        const COMPLETAR_AULA = "aulas/COMPLETAR_AULA";
+        const COMPLETAR_CURSO = "aulas/COMPLETAR_CURSO";
         const RESETAR_CURSO = "aulas/RESETAR_CURSO";
 
         const incrementarTempo = () => ({type: INCREMENTAR_TEMPO});
         const reduzirTempo = () => ({type: REDUZIR_TEMPO});
-        const modificarEmail = () => ({type: MODIFICAR_EMAIL});
+        const modificarEmail = (email) => ({type: MODIFICAR_EMAIL, payload: email});
         const completarAula = (id) => ({type: COMPLETAR_AULA, payload: id});
         const completarCurso = () => ({type: COMPLETAR_CURSO});
         const resetarCurso = () => ({type: RESETAR_CURSO});
@@ -67,6 +67,21 @@
                 completa: false,
             },
         ];
+
+        const reducerAluno = (state = aluno, action) => {
+            switch (action.type) {
+                case INCREMENTAR_TEMPO:
+                    return {...state, diasRestantes: diasRestantes ++};
+                case REDUZIR_TEMPO:
+                    return {...state, diasRestantes: diasRestantes --};
+                case MODIFICAR_EMAIL:
+                    return {...state, email: action.payload};
+                default:
+                    return state;
+            }
+        }
+
+       
 
     </script>
 </body>
