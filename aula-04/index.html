@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redux - Desafio</title>
+    <script src="./redux.min.js"></script>
+    <script src="./immer.umd.production.min.js"></script>
+</head>
+<body>
+     
+    <script>
+        // Usando o Redux (pode usar Immer ou Não).
+        // Crie uma store contendo os estados iniciais abaixo
+        // Crie as seguintes ações:
+        // aluno/INCREMENTAR_TEMPO, adiciona 1 dia de acesso
+        // aluno/REDUZIR_TEMPO, reduz 1 dia de acesso
+        // aluno/MODIFICAR_EMAIL(email), modifica o email do usuário
+        // aulas/COMPLETAR_AULA(id), completa a aula com base no ID passado
+        // aulas/COMPLETAR_CURSO, completa todas as aulas
+        // aulas/RESETAR_CURSO, reseta todas as aulas completas
+        // Crie constantes e action creators para as ações.
+        // Crie um reducer para aluno e um para aulas.
+        // Renderize na tela o nome, email, tempo restante e o total de aulas completas
+        // Configure a DevTools
+        
+        const INCREMENTAR_TEMPO = "aluno/INCREMENTAR_TEMPO";
+        const REDUZIR_TEMPO = "aluno/REDUZIR_TEMPO";
+        const MODIFICAR_EMAIL = "aluno/MODIFICAR_EMAI";
+        const COMPLETAR_AULA = "aluno/COMPLETAR_AULA";
+        const COMPLETAR_CURSO = "aluno/COMPLETAR_CURSO";
+        const RESETAR_CURSO = "aulas/RESETAR_CURSO";
+
+        const incrementarTempo = () => ({type: INCREMENTAR_TEMPO});
+        const reduzirTempo = () => ({type: REDUZIR_TEMPO});
+        const modificarEmail = () => ({type: MODIFICAR_EMAIL});
+        const completarAula = (id) => ({type: COMPLETAR_AULA, payload: id});
+        const completarCurso = () => ({type: COMPLETAR_CURSO});
+        const resetarCurso = () => ({type: RESETAR_CURSO});
+
+        const aluno = {
+            nome: 'André Rafael',
+            email: 'andre@origamid.com',
+            diasRestantes: 120,
+        };
+
+        const aulas = [
+            {
+                id: 1,
+                nome: 'Design',
+                completa: true,
+            },
+            {
+                id: 2,
+                nome: 'HTML',
+                completa: false,
+            },
+            {
+                id: 3,
+                nome: 'CSS',
+                completa: false,
+            },
+            {
+                id: 4,
+                nome: 'JavaScript',
+                completa: false,
+            },
+        ];
+
+    </script>
+</body>
+</html>
