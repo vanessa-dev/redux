@@ -9,6 +9,8 @@
     <script src="./immer.umd.production.min.js"></script>
 </head>
 <body>
+    <h1 id="aulas"></h1>
+    <h1 id="alunos"></h1>
      
     <script>
         // Usando o Redux (pode usar Immer ou Não).
@@ -71,9 +73,9 @@
         const reducerAluno = (state = aluno, action) => {
             switch (action.type) {
                 case INCREMENTAR_TEMPO:
-                    return {...state, diasRestantes: diasRestantes ++};
+                    return {...state, diasRestantes: state.diasRestantes + 1};
                 case REDUZIR_TEMPO:
-                    return {...state, diasRestantes: diasRestantes --};
+                    return {...state, diasRestantes: state.diasRestantes - 1};
                 case MODIFICAR_EMAIL:
                     return {...state, email: action.payload};
                 default:
@@ -81,7 +83,45 @@
             }
         }
 
-       
+        const reducerAula = immer.produce((state, action) => {
+            switch (action.type) {
+                case COMPLETAR_AULA:
+                    const index = state.findIndex((item) => {
+                     item.id === action.payload
+                    });
+                    state[index].completa = true;
+                    break;
+                case COMPLETAR_CURSO:
+                    state.forEach(aula => {
+                        aula.completa = true;
+                    });
+                    break;
+                case RESETAR_CURSO:
+                    state.forEach(aula => {
+                        aula.completa = false;
+                    });
+                    break;
+                default:
+                    return state;
+            }
+        }, aulas);
+        
+        const reducer = Redux.combineReducers({reducerAluno, reducerAula});
+        const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+        
+        function render() {
+            const {reducerAluno, reducerAula} = store.getState();
+            const aulas = document.getElementById("aulas");
+            const alunos = document.getElementById("alunos");
+            alunos.innerText = `${reducerAluno.nome} : ${reducerAluno.email} : ${reducerAluno.diasRestantes}`;
+            aulas.innerText = reducerAula.filter(aula => {
+                aula.completa === true;
+            }).length;
+        }
+        render();
+        store.subscribe(render);
+        store.dispatch(incrementarTempo());
+        store.dispatch(modificarEmail("vanessa_santanatoledo@outlook.com"));
 
     </script>
 </body>
