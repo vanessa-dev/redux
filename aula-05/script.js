@@ -27,8 +27,19 @@ function reducer(state = 0, action) {
 }
 
 const logger = (store) => (next) => (action) => {
-    return next(action)
+    console.group(action.type);
+    console.group("ACTION", action);
+    console.group("PREV_STATE", store.getState());
+    const result = next(action);
+    console.group("NEW_STATE", store.getState());
+    console.groupEnd();
+    return result;
 }
 
-const middleware = Redux.applyMiddleware(logger);
+const { applyMiddleware, compose} = Redux;
+const composeEnhace = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const enhacer = composeEnhace(applyMiddleware(logger));
 const store = Redux.createStore(reducer, middleware);
+
+store.dispatch({ type: "INCREMENTAR"});
+store.dispatch({ type: "INCREMENTAR"});
