@@ -11,9 +11,17 @@ const initialState = {
     error: null
 };
 
+const thunk = (store) => (next) => (action) => {
+    if (typeof action === 'function') {
+      return action(store.dispatch, store.getState);
+    } else {
+      return next(action);
+    }
+};
+
 const { compose, applyMiddleware } = Redux;
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const enhancer = composeEnhancers(applyMiddleware());
+const enhancer = composeEnhancers(applyMiddleware(thunk));
 const store = Redux.createStore(reducer, enhancer);
 
 function reducer (state = initialState, action) {
@@ -29,14 +37,16 @@ function reducer (state = initialState, action) {
 
 
 
-async function fetchUrl(dispatch, url) {
-    try {
-        dispatch({type: "FETCH_START"});
-        const data = await fetch(url).then(resposta => resposta.json());
-        dispatch({type: "FETCH_SUCCESS", payload: data});
-    } catch(error) {
-        dispatch({type: "FETCH_ERROR", payload: error.message});
-    }
-};
-
-fetchUrl(store.dispatch, "https://dogsapi.origamid.dev/json/api/photo");
+function fetchUrl(url) {
+    return async (dispatch) => {
+      try {
+        dispatch({ type: 'FETCH_STARTED' });
+        const data = await fetch(url).then((r) => r.json());
+        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+      } catch (error) {
+        dispatch({ type: 'FETCH_ERROR', payload: error.message });
+      }
+    };
+}
+  
+store.dispatch(fetchUrl('https://dogsapi.origamid.dev/json/api/photo'));
